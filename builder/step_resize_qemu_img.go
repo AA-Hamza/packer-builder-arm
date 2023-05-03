@@ -26,6 +26,15 @@ func (s *StepResizeQemuImage) Run(_ context.Context, state multistep.StateBag) m
 		return multistep.ActionHalt
 	}
 
+	if config.ImageBuildMethod == "resize" && config.ImageType == "gpt" {
+		out, err = exec.Command("sgdisk", "-e", config.ImageConfig.ImagePath).CombinedOutput()
+		ui.Message(fmt.Sprintf("fixing gpt partition after resizing %v", config.ImageConfig.ImagePath))
+		if err != nil {
+			ui.Error(fmt.Sprintf("error while fixing gpt partition %v: %s", err, out))
+			return multistep.ActionHalt
+		}
+	}
+
 	return multistep.ActionContinue
 }
 
