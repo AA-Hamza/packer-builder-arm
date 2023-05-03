@@ -39,7 +39,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            mkaczanowski/packer-builder-arm
+            aahamza/packer-builder-arm
           tags: |
             type=ref,event=branch
             type=ref,event=pr
